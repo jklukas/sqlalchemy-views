@@ -1,0 +1,5 @@
+Run `sphinx-apidoc -o . ../../sqlalchemy_views' in this directory.
+
+This will generate `modules.rst' and `sqlalchemy_views.rst'.
+
+Then include `modules.rst' in your `index.rst' file.

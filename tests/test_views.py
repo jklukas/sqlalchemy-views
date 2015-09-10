@@ -31,6 +31,16 @@ def test_basic_view():
     assert clean(expected_result) == clean(compile_query(create_view))
 
 
+def test_view_replace():
+    expected_result = """
+    CREATE OR REPLACE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1
+    """
+    selectable = sa.sql.select([t1])
+    view = Table('myview', sa.MetaData())
+    create_view = CreateView(view, selectable, or_replace=True)
+    assert clean(expected_result) == clean(compile_query(create_view))
+
+
 def test_view_with_column_names():
     expected_result = """
     CREATE VIEW myview (col3, col4) AS SELECT t1.col1, t1.col2 FROM t1

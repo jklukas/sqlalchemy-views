@@ -38,10 +38,7 @@ sys.path.insert(0, os.path.abspath('.'))
 CODE_DIRECTORY = 'sqlalchemy_views'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
-PYTEST_FLAGS = ['--doctest-modules',
-                '--doctest-glob=*.rst',
-                '--ignore=setup.py',
-                '--ignore=docs/conf.py']
+PYTEST_FLAGS = ['--doctest-modules']
 
 # Import metadata. Normally this would just be:
 #
@@ -187,7 +184,7 @@ def _test():
     # <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
     import pytest
     # This runs the unit tests and doctest.
-    return pytest.main(PYTEST_FLAGS)
+    return pytest.main(PYTEST_FLAGS + [TESTS_DIRECTORY, 'README.rst'])
 
 
 def _test_all():
@@ -239,7 +236,7 @@ setup_dict = dict(
     # Find a list of classifiers here:
     # <http://pypi.python.org/pypi?%3Aaction=list_classifiers>
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -248,7 +245,11 @@ setup_dict = dict(
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: Implementation :: PyPy',
+        'Programming Language :: SQL',
+        'Topic :: Database',
+        'Topic :: Database :: Database Engines/Servers',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(exclude=(TESTS_DIRECTORY,)),

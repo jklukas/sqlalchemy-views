@@ -8,8 +8,8 @@ Information describing the project.
 package = 'sqlalchemy_views'
 project = "View Manipulation for SQLAlchemy"
 project_no_spaces = project.replace(' ', '')
-version = '0.1'
-description = 'Adds CreateView and related functionality to SQLAlchemy'
+version = '0.2'
+description = 'Adds CreateView and DropView constructs to SQLAlchemy'
 authors = ['Jeff Klukas']
 authors_string = ', '.join(authors)
 emails = ['jeff@klukas.net']

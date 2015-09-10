@@ -38,7 +38,10 @@ sys.path.insert(0, os.path.abspath('.'))
 CODE_DIRECTORY = 'sqlalchemy_views'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
-PYTEST_FLAGS = ['--doctest-modules']
+PYTEST_FLAGS = ['--doctest-modules',
+                '--doctest-glob=*.rst',
+                '--ignore=setup.py',
+                '--ignore=docs/conf.py']
 
 # Import metadata. Normally this would just be:
 #
@@ -183,9 +186,8 @@ def _test():
     # Make sure to import pytest in this function. For the reason, see here:
     # <http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands>  # NOPEP8
     import pytest
-    # This runs the unit tests.
-    # It also runs doctest, but only on the modules in TESTS_DIRECTORY.
-    return pytest.main(PYTEST_FLAGS + [TESTS_DIRECTORY])
+    # This runs the unit tests and doctest.
+    return pytest.main(PYTEST_FLAGS)
 
 
 def _test_all():

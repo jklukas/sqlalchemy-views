@@ -7,7 +7,7 @@ Adds `CreateTable` and `DropView` constructs to SQLAlchemy.
 Usage
 -----
 
-Example:
+Examples:
 
     >>> from sqlalchemy import Table, MetaData
     >>> from sqlalchemy.sql import text

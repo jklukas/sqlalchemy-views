@@ -246,6 +246,7 @@ setup_dict = dict(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Programming Language :: SQL',
         'Topic :: Database',
@@ -254,7 +255,7 @@ setup_dict = dict(
     ],
     packages=find_packages(exclude=(TESTS_DIRECTORY,)),
     install_requires=[
-        # your module dependencies
+        'sqlalchemy>=1.0.0',
     ] + python_version_specific_requires,
     # Allow tests to be run with `python setup.py test'.
     tests_require=[
@@ -264,15 +265,6 @@ setup_dict = dict(
     ],
     cmdclass={'test': TestAllCommand},
     zip_safe=False,  # don't use eggs
-    entry_points={
-        'console_scripts': [
-            'sqlalchemy_views_cli = sqlalchemy_views.main:entry_point'
-        ],
-        # if you have a gui, use this
-        # 'gui_scripts': [
-        #     'sqlalchemy_views_gui = sqlalchemy_views.gui:entry_point'
-        # ]
-    }
 )
 
 

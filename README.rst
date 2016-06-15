@@ -43,7 +43,7 @@ Installation
 
 ``sqlalchemy-views`` is available on PyPI and can be installed via ``pip`` ::
 
-    pip install sqalalchemy-views
+    pip install sqlalchemy-views
 
 
 Limitations

@@ -1,7 +1,7 @@
 View Manipulation for SQLAlchemy
 ================================
 
-Adds `CreateTable` and `DropView` constructs to SQLAlchemy.
+Adds `CreateView` and `DropView` constructs to SQLAlchemy.
 
 Status
 ------

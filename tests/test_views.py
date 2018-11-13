@@ -52,6 +52,15 @@ def test_view_with_column_names():
     create_view = CreateView(view, selectable)
     assert clean(expected_result) == clean(compile_query(create_view))
 
+def test_view_with_literals():
+    expected_result = """
+    CREATE VIEW myview (col3) AS SELECT 0 AS anon_1
+    """
+    selectable = sa.sql.select((sa.literal(0),))
+    view = Table('myview', sa.MetaData(),
+                 sa.Column('col3', sa.Integer()))
+    create_view = CreateView(view, selectable)
+    assert clean(expected_result) == clean(compile_query(create_view))
 
 def test_view_with_delimited_identifiers():
     expected_result = """

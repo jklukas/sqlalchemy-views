@@ -49,7 +49,7 @@ def visit_create_view(create, compiler, **kw):
         text += "("
         text += ', '.join(column_names)
         text += ") "
-    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable)
+    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable, literal_binds=True)
     return text
 
 

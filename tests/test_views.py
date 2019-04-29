@@ -1,5 +1,6 @@
 import re
 
+import pytest
 import sqlalchemy as sa
 from sqlalchemy import Table
 
@@ -15,20 +16,26 @@ def clean(query):
     return re.sub(r'\s+', ' ', query).strip()
 
 
-def compile_query(query):
-    return str(query.compile(
-        compile_kwargs={'literal_binds': True})
-    )
+def compile_query(query, **kwargs):
+    compile_kwargs = {'literal_binds': True}
+    compiled = query.compile(compile_kwargs=compile_kwargs, **kwargs)
+    return str(compiled)
 
 
-def test_basic_view():
-    expected_result = """
-    CREATE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1
-    """
+@pytest.mark.parametrize("schema,schema_map,expected_result", [
+    (None, None, "CREATE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1"),
+    ('myschema', None, "CREATE VIEW myschema.myview AS SELECT myschema.t1.col1, myschema.t1.col2 FROM myschema.t1"),
+    ('myschema', {'myschema': None}, "CREATE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1"),
+    ])
+def test_basic_view(schema, schema_map, expected_result):
+    t1 = Table('t1', sa.MetaData(schema=schema),
+               sa.Column('col1', sa.Integer(), primary_key=True),
+               sa.Column('col2', sa.Integer()))
     selectable = sa.sql.select([t1])
-    view = Table('myview', sa.MetaData())
+    view = Table('myview', sa.MetaData(schema=schema))
     create_view = CreateView(view, selectable)
-    assert clean(expected_result) == clean(compile_query(create_view))
+    actual = compile_query(create_view, schema_translate_map=schema_map)
+    assert clean(expected_result) == clean(actual)
 
 
 def test_view_replace():

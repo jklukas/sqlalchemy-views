@@ -38,7 +38,7 @@ class CreateView(_CreateDropBase):
 @compiles(CreateView)
 def visit_create_view(create, compiler, **kw):
     view = create.element
-    preparer = compiler.dialect.identifier_preparer
+    preparer = compiler.preparer
     text = "\nCREATE "
     if create.or_replace:
         text += "OR REPLACE "

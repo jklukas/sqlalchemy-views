@@ -82,6 +82,18 @@ def test_view_with_delimited_identifiers():
     assert clean(expected_result) == clean(compile_query(create_view))
 
 
+def test_view_with_options():
+    expected_result = "CREATE VIEW myview WITH (check_option=local) AS SELECT t1.col1, t1.col2 FROM t1"
+    t1 = Table('t1', sa.MetaData(),
+               sa.Column('col1', sa.Integer(), primary_key=True),
+               sa.Column('col2', sa.Integer()))
+    selectable = sa.sql.select([t1])
+    view = Table('myview', sa.MetaData())
+    create_view = CreateView(view, selectable, options=dict(check_option='local'))
+    actual = compile_query(create_view)
+    assert clean(expected_result) == clean(actual)
+
+
 def test_drop_basic_view():
     expected_result = """
     DROP VIEW myview

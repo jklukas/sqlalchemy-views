@@ -57,7 +57,7 @@ def visit_create_view(create, compiler, **kw):
       ops = []
       for opname, opval in create.options.items():
         ops.append('='.join([str(opname), str(opval)]))
-      text += 'WITH (%s) ' % (','.join(ops))
+      text += 'WITH (%s) ' % (', '.join(ops))
     text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable, literal_binds=True)
     return text
 

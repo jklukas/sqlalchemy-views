@@ -29,6 +29,10 @@ Examples:
     >>> print(str(create_view.compile()).strip())
     CREATE OR REPLACE VIEW my_view AS SELECT * FROM my_table
 
+	>>> create_view = CreateView(view, definition, options={'check_option': 'local'})
+	>>> print(str(create_view.compile()).strip())
+	CREATE VIEW my_view WITH (check_option=local) AS SELECT * FROM my_table
+
     >>> drop_view = DropView(view)
     >>> print(str(drop_view.compile()).strip())
     DROP VIEW my_view

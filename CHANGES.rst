@@ -1,3 +1,9 @@
+0.2.4 (2019-12-11)
+------------------
+
+- Support view options
+  (`PR #8 <https://github.com/jklukas/sqlalchemy-views/pull/8>`_)
+
 0.2.3 (2019-04-29)
 ------------------
 

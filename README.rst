@@ -6,9 +6,9 @@ Adds `CreateView` and `DropView` constructs to SQLAlchemy.
 Status
 ------
 
-Current version is 0.2.3; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been no maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
+Current version is 0.2.4; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been no maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
 
-As of early 2019, this package is still working with latest Python and SQLAlchemy.
+As of late 2019, this package is still working with latest Python and SQLAlchemy.
 
 Usage
 -----
@@ -29,9 +29,9 @@ Examples:
     >>> print(str(create_view.compile()).strip())
     CREATE OR REPLACE VIEW my_view AS SELECT * FROM my_table
 
-	>>> create_view = CreateView(view, definition, options={'check_option': 'local'})
-	>>> print(str(create_view.compile()).strip())
-	CREATE VIEW my_view WITH (check_option=local) AS SELECT * FROM my_table
+    >>> create_view = CreateView(view, definition, options={'check_option': 'local'})
+    >>> print(str(create_view.compile()).strip())
+    CREATE VIEW my_view WITH (check_option=local) AS SELECT * FROM my_table
 
     >>> drop_view = DropView(view)
     >>> print(str(drop_view.compile()).strip())

@@ -25,7 +25,6 @@ def compile_query(query, **kwargs):
 @pytest.mark.parametrize("schema,schema_map,expected_result", [
     (None, None, "CREATE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1"),
     ('myschema', None, "CREATE VIEW myschema.myview AS SELECT myschema.t1.col1, myschema.t1.col2 FROM myschema.t1"),
-    ('myschema', {'myschema': None}, "CREATE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1"),
     ])
 def test_basic_view(schema, schema_map, expected_result):
     t1 = Table('t1', sa.MetaData(schema=schema),

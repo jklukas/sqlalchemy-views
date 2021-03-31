@@ -3,9 +3,11 @@ import re
 import pytest
 import sqlalchemy as sa
 from sqlalchemy import Table
+from packaging.version import Version
 
 from sqlalchemy_views import CreateView, DropView
 
+sqla_version = Version(sa.__version__)
 
 t1 = Table('t1', sa.MetaData(),
            sa.Column('col1', sa.Integer(), primary_key=True),
@@ -93,6 +95,19 @@ def test_view_with_options():
     assert clean(expected_result) == clean(actual)
 
 
+@pytest.mark.skipif(sqla_version < Version('1.4.0'),
+                    reason="Only for SQLAlchemy >= 1.4.0")
+def test_view_with_on_parameter_is_not_none():
+    expected_result = """
+    CREATE OR REPLACE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1
+    """
+    selectable = sa.sql.select([t1])
+    view = Table('myview', sa.MetaData())
+    with pytest.raises(TypeError):
+        create_view = CreateView(
+            view, selectable, on=True)  # on is not None
+
+
 def test_drop_basic_view():
     expected_result = """
     DROP VIEW myview
@@ -127,3 +142,14 @@ def test_drop_with_delimited_identifier():
     view = Table('my nice view!', sa.MetaData())
     drop_view = DropView(view, if_exists=True)
     assert clean(expected_result) == clean(compile_query(drop_view))
+
+
+@pytest.mark.skipif(sqla_version < Version('1.4.0'),
+                    reason="Only for SQLAlchemy >= 1.4.0")
+def test_drop_with_on_parameter_is_not_none():
+    expected_result = """
+    DROP VIEW myview
+    """
+    view = Table('myview', sa.MetaData())
+    with pytest.raises(TypeError):
+        DropView(view, on=True)  # on is not None

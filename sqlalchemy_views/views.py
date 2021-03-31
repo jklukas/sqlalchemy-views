@@ -32,7 +32,13 @@ class CreateView(_CreateDropBase):
 
     def __init__(self, element, selectable, on=None, bind=None,
                  or_replace=False, options=None):
-        super(CreateView, self).__init__(element, on=on, bind=bind)
+        try:
+            super(CreateView, self).__init__(element, on=on, bind=bind)
+        except TypeError:
+            # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
+            # longer exists. it causes a ** TypeError ** exception
+            super(CreateView, self).__init__(element, bind=bind)
+
         self.columns = [CreateColumn(column) for column in element.columns]
         self.selectable = selectable
         self.or_replace = or_replace
@@ -54,11 +60,14 @@ def visit_create_view(create, compiler, **kw):
         text += ', '.join(column_names)
         text += ") "
     if create.options:
-      ops = []
-      for opname, opval in create.options.items():
-        ops.append('='.join([str(opname), str(opval)]))
-      text += 'WITH (%s) ' % (', '.join(ops))
-    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable, literal_binds=True)
+        ops = []
+        for opname, opval in create.options.items():
+            ops.append('='.join([str(opname), str(opval)]))
+
+        text += 'WITH (%s) ' % (', '.join(ops))
+
+    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable,
+                                                        literal_binds=True)
     return text
 
 
@@ -83,7 +92,13 @@ class DropView(_CreateDropBase):
 
     def __init__(self, element, on=None, bind=None,
                  cascade=False, if_exists=False):
-        super(DropView, self).__init__(element, on=on, bind=bind)
+        try:
+            super(DropView, self).__init__(element, on=on, bind=bind)
+        except TypeError:
+            # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
+            # longer exists. it causes a ** TypeError ** exception
+            super(DropView, self).__init__(element, bind=bind)
+
         self.cascade = cascade
         self.if_exists = if_exists
 

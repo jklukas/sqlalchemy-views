@@ -37,6 +37,9 @@ class CreateView(_CreateDropBase):
         except TypeError:
             # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
             # longer exists. it causes a ** TypeError ** exception
+            if on is not None:
+                raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
+
             super(CreateView, self).__init__(element, bind=bind)
 
         self.columns = [CreateColumn(column) for column in element.columns]
@@ -97,6 +100,9 @@ class DropView(_CreateDropBase):
         except TypeError:
             # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
             # longer exists. it causes a ** TypeError ** exception
+            if on is not None:
+                raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
+
             super(DropView, self).__init__(element, bind=bind)
 
         self.cascade = cascade

@@ -1,14 +1,14 @@
 View Manipulation for SQLAlchemy
 ================================
 
-Adds `CreateView` and `DropView` constructs to SQLAlchemy.
+Adds ``CreateView`` and ``DropView`` constructs to SQLAlchemy.
 
 Status
 ------
 
-Current version is 0.2.4; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been no maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
+Current version is 0.3.0; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been minimal maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
 
-As of late 2019, this package is still working with latest Python and SQLAlchemy.
+This package is working with latest Python and SQLAlchemy as of early 2021.
 
 Usage
 -----
@@ -60,7 +60,7 @@ Limitations
 -----------
 
 Various SQL dialects have developed custom
-`CREATE VIEW` and `DROP VIEW` syntax.
+``CREATE VIEW`` and ``DROP VIEW`` syntax.
 This project aims to provide the core set of functionality
 shared by most database engines.
 
@@ -73,3 +73,6 @@ Some design ideas taken from the
 
 Package structure is based on
 `python-project-template <https://github.com/seanfisk/python-project-template>`_.
+
+And thank you to the various
+`contributors <https://github.com/jklukas/sqlalchemy-views/graphs/contributors>`_!

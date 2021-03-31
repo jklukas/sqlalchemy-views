@@ -8,11 +8,11 @@ Information describing the project.
 package = 'sqlalchemy-views'
 project = "View Manipulation for SQLAlchemy"
 project_no_spaces = project.replace(' ', '')
-version = '0.2.4'
+version = '0.3.0'
 description = 'Adds CreateView and DropView constructs to SQLAlchemy'
 authors = ['Jeff Klukas']
 authors_string = ', '.join(authors)
 emails = ['jeff@klukas.net']
 license = 'MIT'
-copyright = '2019 ' + authors_string
+copyright = '2019-2021 ' + authors_string
 url = 'https://github.com/jklukas/sqlalchemy-views'

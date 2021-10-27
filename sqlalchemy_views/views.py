@@ -26,12 +26,22 @@ class CreateView(_CreateDropBase):
     options: dict
         Specify optional parameters for a view. For Postgresql, it translates
         into 'WITH ( view_option_name [= view_option_value] [, ... ] )'
+    materialized: boolean
+        If True, create a materialized view.
     """
 
     __visit_name__ = "create_view"
 
-    def __init__(self, element, selectable, on=None, bind=None,
-                 or_replace=False, options=None):
+    def __init__(
+        self,
+        element,
+        selectable,
+        on=None,
+        bind=None,
+        or_replace=False,
+        options=None,
+        materialized=False,
+    ):
         try:
             super(CreateView, self).__init__(element, on=on, bind=bind)
         except TypeError:
@@ -46,6 +56,7 @@ class CreateView(_CreateDropBase):
         self.selectable = selectable
         self.or_replace = or_replace
         self.options = options
+        self.materialized = materialized
 
 
 @compiles(CreateView)
@@ -54,23 +65,29 @@ def visit_create_view(create, compiler, **kw):
     preparer = compiler.preparer
     text = "\nCREATE "
     if create.or_replace:
+        if create.materialized:
+            raise ValueError(
+                "Materialized views can not be replaced! View must be dropped (see `DropView`) and created `(CreateView(or_replace=False ...`"
+            )
         text += "OR REPLACE "
+    if create.materialized:
+        text += "MATERIALIZED "
     text += "VIEW %s " % preparer.format_table(view)
     if create.columns:
-        column_names = [preparer.format_column(col.element)
-                        for col in create.columns]
+        column_names = [preparer.format_column(col.element) for col in create.columns]
         text += "("
-        text += ', '.join(column_names)
+        text += ", ".join(column_names)
         text += ") "
     if create.options:
         ops = []
         for opname, opval in create.options.items():
-            ops.append('='.join([str(opname), str(opval)]))
+            ops.append("=".join([str(opname), str(opval)]))
 
-        text += 'WITH (%s) ' % (', '.join(ops))
+        text += "WITH (%s) " % (", ".join(ops))
 
-    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable,
-                                                        literal_binds=True)
+    text += "AS %s\n\n" % compiler.sql_compiler.process(
+        create.selectable, literal_binds=True
+    )
     return text
 
 
@@ -89,12 +106,21 @@ class DropView(_CreateDropBase):
     if_exists: boolean
         Do nothing if the view does not exist.
         An exception will be raised for nonexistent views if not set.
+    materialized: boolean
+        Create a materialized view.
     """
 
     __visit_name__ = "drop_view"
 
-    def __init__(self, element, on=None, bind=None,
-                 cascade=False, if_exists=False):
+    def __init__(
+        self,
+        element,
+        on=None,
+        bind=None,
+        cascade=False,
+        if_exists=False,
+        materialized=False,
+    ):
         try:
             super(DropView, self).__init__(element, on=on, bind=bind)
         except TypeError:
@@ -107,11 +133,15 @@ class DropView(_CreateDropBase):
 
         self.cascade = cascade
         self.if_exists = if_exists
+        self.materialized = materialized
 
 
 @compiles(DropView)
 def compile(drop, compiler, **kw):
-    text = "\nDROP VIEW "
+    text = "\nDROP "
+    if drop.materialized:
+        text += "MATERIALIZED "
+    text += "VIEW "
     if drop.if_exists:
         text += "IF EXISTS "
     text += compiler.preparer.format_table(drop.element)

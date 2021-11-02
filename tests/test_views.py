@@ -3,6 +3,7 @@ import re
 import pytest
 import sqlalchemy as sa
 from sqlalchemy import Table
+from sqlalchemy.dialects import postgresql
 from packaging.version import Version
 
 from sqlalchemy_views import CreateView, DropView
@@ -93,6 +94,17 @@ def test_view_with_options():
     create_view = CreateView(view, selectable, options=dict(check_option='local'))
     actual = compile_query(create_view)
     assert clean(expected_result) == clean(actual)
+
+def test_view_with_compiled_select():
+    expected_result = """
+    CREATE VIEW myview AS SELECT DISTINCT ON (t1.col2) t1.col1, t1.col2 FROM t1
+    """
+    selectable = (
+        sa.sql.select([t1]).distinct(t1.c.col2).compile(dialect=postgresql.dialect())
+    )
+    view = Table("myview", sa.MetaData())
+    create_view = CreateView(view, selectable)
+    assert clean(expected_result) == clean(compile_query(create_view))
 
 
 @pytest.mark.skipif(sqla_version < Version('1.4.0'),

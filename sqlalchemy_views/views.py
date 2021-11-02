@@ -5,6 +5,7 @@
 from sqlalchemy.schema import CreateColumn
 from sqlalchemy.sql.ddl import _CreateDropBase
 from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.engine import Compiled
 
 
 class CreateView(_CreateDropBase):
@@ -69,8 +70,12 @@ def visit_create_view(create, compiler, **kw):
 
         text += 'WITH (%s) ' % (', '.join(ops))
 
-    text += "AS %s\n\n" % compiler.sql_compiler.process(create.selectable,
-                                                        literal_binds=True)
+    compiled_selectable = (
+        create.selectable
+        if isinstance(create.selectable, Compiled)
+        else compiler.sql_compiler.process(create.selectable, literal_binds=True)
+    )
+    text += "AS %s\n\n" % compiled_selectable
     return text
 
 

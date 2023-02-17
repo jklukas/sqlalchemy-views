@@ -2,6 +2,7 @@ import re
 
 import pytest
 import sqlalchemy as sa
+from sqlalchemy import Table
 from sqlalchemy.dialects import postgresql
 from packaging.version import Version
 

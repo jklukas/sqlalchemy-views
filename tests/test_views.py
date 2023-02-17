@@ -2,7 +2,7 @@ import re
 
 import pytest
 import sqlalchemy as sa
-from sqlalchemy import Table
+from sqlalchemy import Table, text
 from sqlalchemy.dialects import postgresql
 from packaging.version import Version
 
@@ -62,10 +62,10 @@ def test_view_with_column_names():
     assert clean(expected_result) == clean(compile_query(create_view))
 
 def test_view_with_literals():
-    expected_result = """
+    expected_result = text("""
     CREATE VIEW myview (col3) AS SELECT 0 AS anon_1
-    """
-    selectable = sa.sql.select((sa.literal(0),))
+    """)
+    selectable = sa.sql.select(sa.literal(0))
     view = Table('myview', sa.MetaData(),
                  sa.Column('col3', sa.Integer()))
     create_view = CreateView(view, selectable)

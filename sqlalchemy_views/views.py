@@ -124,7 +124,7 @@ class DropView(_CreateDropBase):
                 # longer exists. it causes a ** TypeError ** exception
                 if bind is not None:
                     raise TypeError(
-                        "'bind' is not supported on SQLAlchemy 1.4+")
+                        "'bind' is not supported on SQLAlchemy 2.0+")
 
                 super(DropView, self).__init__(element)
 

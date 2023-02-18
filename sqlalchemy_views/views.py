@@ -31,8 +31,27 @@ class CreateView(_CreateDropBase):
 
     __visit_name__ = "create_view"
 
-    def __init__(self, element, selectable, or_replace=False, options=None):
-        super(CreateView, self).__init__(element)
+    def __init__(self, element, selectable, on=None, bind=None,
+                 or_replace=False, options=None):
+        try:
+            super(CreateView, self).__init__(element, on=on, bind=bind)
+        except TypeError:
+            # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
+            # longer exists. it causes a ** TypeError ** exception
+            if on is not None:
+                raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
+
+            try:
+                super(CreateView, self).__init__(element, bind=bind)
+            except TypeError:
+                # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
+                # longer exists. it causes a ** TypeError ** exception
+                if on is not None:
+                    raise TypeError(
+                        "'bind' is not supported on SQLAlchemy 1.4+")
+
+                super(CreateView, self).__init__(element)
+
         self.columns = [CreateColumn(column) for column in element.columns]
         self.selectable = selectable
         self.or_replace = or_replace
@@ -88,8 +107,27 @@ class DropView(_CreateDropBase):
 
     __visit_name__ = "drop_view"
 
-    def __init__(self, element, cascade=False, if_exists=False):
-        super(DropView, self).__init__(element)
+    def __init__(self, element, on=None, bind=None,
+                 cascade=False, if_exists=False):
+        try:
+            super(DropView, self).__init__(element, on=on, bind=bind)
+        except TypeError:
+            # Since version 1.4.0 of SQLAlchemy the ** on ** parameter no
+            # longer exists. it causes a ** TypeError ** exception
+            if on is not None:
+                raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
+
+            try:
+                super(DropView, self).__init__(element, bind=bind)
+            except TypeError:
+                # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
+                # longer exists. it causes a ** TypeError ** exception
+                if on is not None:
+                    raise TypeError(
+                        "'bind' is not supported on SQLAlchemy 1.4+")
+
+                super(DropView, self).__init__(element)
+
         self.cascade = cascade
         self.if_exists = if_exists
 

@@ -6,9 +6,9 @@ Adds ``CreateView`` and ``DropView`` constructs to SQLAlchemy.
 Status
 ------
 
-Current version is 0.3.1; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been minimal maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
+Current version is 0.3.2; releases are infrequent as the code here is small and based on stable pieces of the SQLAlchemy API, so there has been minimal maintenance required so far to keep compatibility with new SQLAlchemy or python versions.
 
-This package is working with latest Python and SQLAlchemy as of late 2021.
+This package is working with latest Python and SQLAlchemy (1.0+ and 2.0) as of early 2023.
 
 Usage
 -----

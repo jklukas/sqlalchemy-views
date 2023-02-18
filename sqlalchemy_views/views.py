@@ -46,7 +46,7 @@ class CreateView(_CreateDropBase):
             except TypeError:
                 # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
                 # longer exists. it causes a ** TypeError ** exception
-                if on is not None:
+                if bind is not None:
                     raise TypeError(
                         "'bind' is not supported on SQLAlchemy 1.4+")
 
@@ -122,7 +122,7 @@ class DropView(_CreateDropBase):
             except TypeError:
                 # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
                 # longer exists. it causes a ** TypeError ** exception
-                if on is not None:
+                if bind is not None:
                     raise TypeError(
                         "'bind' is not supported on SQLAlchemy 1.4+")
 

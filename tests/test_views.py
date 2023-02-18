@@ -120,6 +120,19 @@ def test_view_with_on_parameter_is_not_none():
             view, selectable, on=True)  # on is not None
 
 
+@pytest.mark.skipif(sqla_version < Version('2.0.0'),
+                    reason="Only for SQLAlchemy >= 2.0.0")
+def test_view_with_bind_parameter_is_not_none():
+    expected_result = """
+    CREATE OR REPLACE VIEW myview AS SELECT t1.col1, t1.col2 FROM t1
+    """
+    selectable = sa.sql.select(t1)
+    view = Table('myview', sa.MetaData())
+    with pytest.raises(TypeError):
+        create_view = CreateView(
+            view, selectable, bind=True)  # bind is not None
+
+
 def test_drop_basic_view():
     expected_result = """
     DROP VIEW myview
@@ -165,3 +178,14 @@ def test_drop_with_on_parameter_is_not_none():
     view = Table('myview', sa.MetaData())
     with pytest.raises(TypeError):
         DropView(view, on=True)  # on is not None
+
+
+@pytest.mark.skipif(sqla_version < Version('2.0.0'),
+                    reason="Only for SQLAlchemy >= 2.0.0")
+def test_drop_with_bind_parameter_is_not_none():
+    expected_result = """
+    DROP VIEW myview
+    """
+    view = Table('myview', sa.MetaData())
+    with pytest.raises(TypeError):
+        DropView(view, bind=True)  # bind is not None

@@ -41,7 +41,16 @@ class CreateView(_CreateDropBase):
             if on is not None:
                 raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
 
-            super(CreateView, self).__init__(element, bind=bind)
+            try:
+                super(CreateView, self).__init__(element, bind=bind)
+            except TypeError:
+                # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
+                # longer exists. it causes a ** TypeError ** exception
+                if bind is not None:
+                    raise TypeError(
+                        "'bind' is not supported on SQLAlchemy 2.0+")
+
+                super(CreateView, self).__init__(element)
 
         self.columns = [CreateColumn(column) for column in element.columns]
         self.selectable = selectable
@@ -108,7 +117,16 @@ class DropView(_CreateDropBase):
             if on is not None:
                 raise TypeError("'on' is not supported on SQLAlchemy 1.4+")
 
-            super(DropView, self).__init__(element, bind=bind)
+            try:
+                super(DropView, self).__init__(element, bind=bind)
+            except TypeError:
+                # Since version 2.0.0 of SQLAlchemy the ** bind ** parameter no
+                # longer exists. it causes a ** TypeError ** exception
+                if bind is not None:
+                    raise TypeError(
+                        "'bind' is not supported on SQLAlchemy 2.0+")
+
+                super(DropView, self).__init__(element)
 
         self.cascade = cascade
         self.if_exists = if_exists

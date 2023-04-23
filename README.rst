@@ -43,9 +43,9 @@ Examples:
 
 Note that the SQLAlchemy ``Table`` object is used to represent
 both tables and views. To introspect a view, create a ``Table``
-with ``autoload=True``, and then use SQLAlchemy's
-``get_view_definition`` method to generate the second
-argument to ``CreateView``.
+with ``autoload=True`` (or ``autload_with=engine`` in SQLAlchemy 2.0+),
+and then use SQLAlchemy's ``get_view_definition`` method to
+generate the second argument to ``CreateView``.
 
 
 Installation

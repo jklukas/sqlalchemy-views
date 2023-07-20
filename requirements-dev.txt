@@ -18,7 +18,7 @@ Sphinx==1.2
 docutils==0.19
 Jinja2==2.11.3
 MarkupSafe==1.1.1
-Pygments==2.7.4
+Pygments==2.15.0
 
 # Miscellaneous
 Paver==1.2.1

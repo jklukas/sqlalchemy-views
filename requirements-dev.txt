@@ -2,7 +2,7 @@
 --requirement requirements.txt
 
 # Testing
-pytest==6.2.2
+pytest==9.0.3
 pytest-cov==2.11.1
 py==1.10.0
 mock==1.0.1
